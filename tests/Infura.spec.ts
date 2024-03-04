@@ -5,7 +5,7 @@ import mock from "mock-fs";
 import nock from "nock";
 import path from "path";
 import { Infura } from "../src/classes/Infura";
-import { Collection } from "../src/classes/Collection";
+import { Collection } from "../src/chains/Ethereum/contracts/EthereumCollection";
 import { readFileSync } from "fs";
 
 const expect = chai.expect;

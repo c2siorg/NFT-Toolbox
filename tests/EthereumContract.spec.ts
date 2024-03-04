@@ -3,7 +3,7 @@ import chai from "chai";
 import mock from "mock-fs";
 import fs from "fs";
 import path from "path";
-import { Contract } from "../src/classes/Contract";
+import { Contract } from "../src/chains/Ethereum/contracts/EthereumContract";
 
 const expect = chai.expect;
 

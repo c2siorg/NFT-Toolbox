@@ -1,6 +1,6 @@
 import { PathLike } from "fs";
-import { Collection, LayerSchema } from "./classes/Collection";
-import { Contract, ContractAttributes, DraftOptions } from "./classes/Contract";
+import { Collection, LayerSchema } from "./chains/Ethereum/contracts/EthereumCollection";
+import { Contract, ContractAttributes, DraftOptions } from "./chains/Ethereum/contracts/EthereumContract";
 import { FileStorage } from "./classes/FileStorage";
 import { execSync } from "child_process";
 import { Arweave } from "./classes/Arweave";
@@ -14,7 +14,7 @@ class Toolbox {
 	private fileStorageService: FileStorage | undefined = undefined;
 	private contract: Contract | undefined = undefined;
 
-	initCollection(attr: { name: string; dir: string; description?: string }) {
+	initEthereumCollection(attr: { name: string; dir: string; description?: string }) {
 		this.collection = new Collection({
 			name: attr.name,
 			dir: attr.dir,
@@ -134,18 +134,18 @@ class Toolbox {
 		return response;
 	}
 
-	initContract(attr: ContractAttributes) {
+	initEthereumContract(attr: ContractAttributes) {
 		this.contract = new Contract(attr);
 	}
 
-	draftContract(options: DraftOptions) {
+	draftEthereumContract(options: DraftOptions) {
 		if (!this.contract) {
 			throw new Error("No Contract is initialized");
 		}
 		this.contract.draft(options);
 	}
 
-	deployContract() {
+	deployEthereumContract() {
 		if (!this.contract) {
 			throw new Error("No Contract is initialized");
 		}
