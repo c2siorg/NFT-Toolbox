@@ -6,7 +6,6 @@ import { Web3Stash } from "web3stash";
 const web3Stash = new Web3Stash();
 
 export abstract class FileStorage {
-	
   abstract serviceBaseURL: string;
   async uploadDirToService(dir: PathLike): Promise<string> {
     const directoryData = this.readDirectory(dir);
@@ -24,6 +23,10 @@ export abstract class FileStorage {
     const jsonCID = await web3Stash.uploadJSON(json);
     return jsonCID;
   }
+
+  protected abstract readDirectory(dir: PathLike): any;
+  protected abstract readFile(file: PathLike): any;
+
   async uploadCollection(
     collection: Collection
   ): Promise<{ metadataCID: string; assetCID: string }> {
