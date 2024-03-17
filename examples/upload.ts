@@ -13,10 +13,10 @@ nftToolbox.initCollection({
 	description: "This is a demo collection for NFT Toolbox",
 });
 
-// const uploadCollectionExample = async function () {
-// 	const res = await nftToolbox.uploadCollectionNFT();
-// 	console.log(res);
-// };
+const uploadCollectionExample = async function () {
+	const res = await nftToolbox.uploadCollectionNFT();
+	console.log(res);
+};
 
 const demoSingleNftImage = path.resolve(
 	__dirname,
