@@ -17,25 +17,19 @@ export class FileStorage {
 		this.serviceBaseURL = serviceBaseUrl;
 		this.storageService =  Web3Stash(storageServiceName, key);
 	}
+	
 	async uploadDirToService(dir: fs.PathLike): Promise<string> {
-		const files = filesFromPath(dir.toString(), {
-			pathPrefix: dir.toString(),
-		});
-	 const cid = await this.storageService.uploadFile(dir.toString());
-	 console.log(cid.id)
+		const cid = await this.storageService.uploadFile(dir.toString());
 		return cid.id;
 	}
 
 	async uploadFileToService(file: fs.PathLike): Promise<string> {
-		const fileBinary = fs.readFileSync(file);
-		const fileBlob = new Blob([fileBinary]);
-		const cid = await this.storageService.uploadFile(file.toString());
-		console.log(cid.id)
+		const filePath = file.toString();
+		const cid = await this.storageService.uploadFile(filePath);
 		return cid.id;
 	}
 
 	async uploadJSONToService(json: any): Promise<string> {
-		const fileBlob = new Blob([json]);
 		const cid = await this.storageService.uploadJson(json);
 		return cid.id;
 	}
