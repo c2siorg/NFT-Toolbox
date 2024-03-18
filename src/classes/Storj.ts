@@ -16,7 +16,7 @@ export class Storj extends FileStorage {
 		password: string;
 	};
 	constructor(username: string, password: string) {
-		super();
+		super("NFT.STORAGE","Hey", "password");
 		this.AUTH = { username, password };
 	}
 

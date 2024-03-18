@@ -66,11 +66,11 @@ class Toolbox {
 				break;
 
 			case "infura":
-				if (!attr.username) {
-					throw new Error("INFURA Username required");
+				if (!attr.key) {
+					throw new Error("INFURA projectId required");
 				}
-				if (!attr.password) {
-					throw new Error("INFURA Password required");
+				if (!attr.secret) {
+					throw new Error("INFURA projectSecret required");
 				}
 				execSync("npm install ndjson-parse", {
 					stdio: [0, 1, 2],

@@ -45,11 +45,11 @@ const uploadSingleExample = async function () {
 
 //////////////////////// Select ONE File Storage Platform ////////////////////////
 
-nftToolbox.initFileStorageService({
-	service: "pinata",
-	key: account.PINATA_KEY,
-	secret: account.PINATA_SECURITY,
-});
+// nftToolbox.initFileStorageService({
+// 	service: "pinata",
+// 	key: account.PINATA_KEY,
+// 	secret: account.PINATA_SECURITY,
+// });
 
 // nftToolbox.initFileStorageService({
 // 	service: "nft.storage",
@@ -67,14 +67,14 @@ nftToolbox.initFileStorageService({
 // key : account.ARWEAVE_PVTKEY
 // });
 
-// nftToolbox.initFileStorageService({
-// 	service: "infura",
-// 	key: account.INFURA_KEY,
-// 	secret: account.INFURA_SECRET,
-// });
+nftToolbox.initFileStorageService({
+	service: "infura",
+	key: account.INFURA_KEY,
+	secret: account.INFURA_SECRET,
+});
 
 //////////////////////////////////////////////////////////////////////////////////
 
-// uploadCollectionExample();
+uploadCollectionExample();
 
 uploadSingleExample();

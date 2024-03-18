@@ -345,7 +345,7 @@ export class Collection {
 						);
 					}
 					// Adding Layer Elements
-					renderImageArray.forEach((img, index) => {
+					renderImageArray.forEach((img : any, index) => {
 						if (!this.schema || !this.layers) {
 							throw new Error("Schema not found");
 						}
