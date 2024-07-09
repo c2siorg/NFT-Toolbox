@@ -27,8 +27,8 @@ An npm package for seamless integration of all NFT related functionalities in We
     -   `/src/index.ts ` : Toolbox class, the single default export from the package
     -   `/src/classes` : Core classes of the package that implement functionalities
     -   `/src/helpers` : Helper classes that are used by core classes
+    -   `src/chains` : Blockchain-specific implementations, adapters, and example scripts for various functionalities
 -   `/tests` : Tests for all core classes
--   `/examples` : Example scripts for all functionalities
 -   `/docs` : Markdown documentation
 -   `/documentation` : Docusaurus project for documentation website
 
@@ -64,7 +64,7 @@ An npm package for seamless integration of all NFT related functionalities in We
     To run an example script, update the required credentials in `examples/*.json` file and run
 
     ```
-    ts-node examples/generate.ts
+    ts-node src/chains/Ethereum/functions/generateEthereum.ts
     ```
 
     To run Tests, update the required credentials in `tests/test_specs.json` file and run

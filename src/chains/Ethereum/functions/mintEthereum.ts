@@ -1,18 +1,18 @@
 import path from "path";
 import fs from "fs";
-import { nftToolbox } from "../src/index";
+import { nftToolbox } from "../../../index";
 
-nftToolbox.initContract({
+nftToolbox.initEthereumContract({
 	name: "DemoContract",
 	symbol: "DEMO",
 	dir: path.join(__dirname, "Contracts"),
 	standard: "ERC721",
 	connection: JSON.parse(
-		fs.readFileSync(path.join(__dirname, "connection.json")).toString()
+		fs.readFileSync(path.join(__dirname, "..", "..", "..", "connection.json")).toString()
 	),
 	deployed: {
 		address: "0x5009278830fB58551bD518157cBb0002eB5DC80E",
-		abi: fs.readFileSync(path.join(__dirname, "abi.json")).toString(),
+		abi: fs.readFileSync(path.join(__dirname, "..", "..", "..", "abi.json")).toString(),
 	},
 });
 
