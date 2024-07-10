@@ -14,28 +14,52 @@ field. Finally the updated Metadata is uploaded and both Asset and Metadata
 
 :::note
 The `image` field in Metadata is named and updated in accordance with the
-[OpenSea Metadata Standards](https://docs.opensea.io/docs/metadata-standards).
+[OpenSea Metadata Standards](https://docs.opensea.io/docs/metadata-standards) for Ethereum.
+Solana follows [Metaplex standard](https://developers.metaplex.com/token-metadata/token-standard) for Solana collections.
 If a different format is required, it can be updated separately using the
 [CIDs](https://docs.ipfs.tech/concepts/content-addressing/) returned by the function.
 :::
 
-## Example
+## For Ethereum
 
 **After [Initializing the File Storage](/docs/Upload/initializeFileStorage),**
 
 ```javascript
-const nftImagePath = "./path/to/YourAsset.png";
+const nftImagePath = "./path/to/YourEthereumAsset.png";
 const nftMetadata = {
-	name: "Your Single NFT",
-	description: "This is a single NFT",
+	name: "Your Ethereum NFT",
+	description: "This is a single Ethereum NFT",
 };
 
-const uploadSingleExample = async function () {
+const uploadEthereumNFTExample = async function () {
 	const { assetCID, metadataCID } = await nftToolbox.uploadSingleNFT(
 		nftImagePath,
 		nftMetadata
 	);
 	console.log(assetCID, metadataCID);
 };
-uploadSingleExample();
+uploadEthereumNFTExample();
+```
+
+## For Solana
+
+**After [Initializing the File Storage](/docs/Upload/initializeFileStorage),**
+
+```javascript
+const nftImagePath = "./path/to/YourSolanaAsset.png";
+const nftMetadata = {
+	name: "Your Solana NFT",
+	description: "This is a single Solana NFT",
+    programId: new PublicKey("your-program-id"),
+    account: new PublicKey("your-account-public-key"),
+};
+
+const uploadSolanaNFTExample = async function () {
+	const { assetCID, metadataCID } = await nftToolbox.uploadSingleNFT(
+		nftImagePath,
+		nftMetadata
+	);
+	console.log(assetCID, metadataCID);
+};
+uploadSolanaNFTExample();
 ```

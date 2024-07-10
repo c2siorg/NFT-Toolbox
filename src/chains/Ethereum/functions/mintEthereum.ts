@@ -1,8 +1,8 @@
 import path from "path";
 import fs from "fs";
-import { nftToolbox } from "../src/index";
+import { nftToolbox } from "../../../index";
 
-nftToolbox.initContract({
+nftToolbox.initEthereumContract({
 	name: "DemoContract",
 	symbol: "DEMO",
 	dir: path.join(__dirname, "Contracts"),
@@ -19,14 +19,14 @@ nftToolbox.initContract({
 const demoMintNFT = async () => {
 	const address = "0x7304Cf13eEE8c8C20C6569E2024fB9079184F430";
 
-	let bal = await nftToolbox.readContract("balanceOf", [address]);
+	let bal = await nftToolbox.readEthereumContract("balanceOf", [address]);
 	console.log("Balance: ", bal.toString());
 
 	console.log("Minting New Token");
-	const tx = await nftToolbox.writeContract("safeMint", [address]);
+	const tx = await nftToolbox.writeEthereumContract("safeMint", [address]);
 	await tx.wait();
 
-	bal = await nftToolbox.readContract("balanceOf", [address]);
+	bal = await nftToolbox.readEthereumContract("balanceOf", [address]);
 	console.log("Balance: ", bal.toString());
 };
 

@@ -1,7 +1,8 @@
 import fs from "fs";
 import path from "path";
 import canvas from "canvas";
-import { ProgressBar } from "../helpers/ProgressBar";
+import { ProgressBar } from "../../../helpers/ProgressBar";
+
 
 const DNA_DELIMITER = "+";
 
@@ -83,12 +84,17 @@ export class Collection {
 		if (!this.schema || !this.layers) {
 			throw new Error("Schema required for generating NFTs");
 		}
-		if (fs.existsSync(this.dir)) {
-			fs.rmSync(this.dir, { recursive: true });
+		if (!fs.existsSync(this.dir)) {
+			fs.mkdirSync(this.dir);
 		}
-		fs.mkdirSync(this.dir);
-		fs.mkdirSync(path.join(this.dir.toString(), "assets"));
-		fs.mkdirSync(path.join(this.dir.toString(), "metadata"));
+		const assetsDir = path.join(this.dir.toString(), "assets");
+		if (!fs.existsSync(assetsDir)) {
+			fs.mkdirSync(assetsDir);
+		}
+		const metadataDir = path.join(this.dir.toString(), "metadata");
+		if (!fs.existsSync(metadataDir)) {
+			fs.mkdirSync(metadataDir);
+		}
 	}
 	readDirElements(dir: fs.PathLike) {
 		return fs.readdirSync(dir);
@@ -111,10 +117,12 @@ export class Collection {
 		);
 	}
 	saveMetadata(metadata: Metadata, _index: number) {
-		fs.writeFileSync(
-			path.join(this.dir.toString(), "metadata", `${_index}.json`),
-			JSON.stringify(metadata, null, 2)
-		);
+		const metadataPath = path.join(this.dir.toString(), "metadata", `${_index}.json`);
+		try {
+			fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 2));
+		} catch (error) {
+			console.error(`Error saving metadata file ${metadataPath}:`, error);
+		}
 	}
 
 	// Setters
@@ -133,66 +141,66 @@ export class Collection {
 	setSchema(schema: LayerSchema) {
 		// Function to recursively read images in a Layer directory and return array of Elements
 		const getElements = (dir: fs.PathLike, rarityDelimiter: string) => {
-			// Functions for extracting name and rarity weight from file name
-			// File name is of the form "{name} rarityDelimiter {rarityWeight} . {extension}"
-			const cleanName = (str: string) =>
-				path.parse(str).name.split(rarityDelimiter).shift();
-			const rarityWeight = (str: string) =>
-				path.parse(str).name.split(rarityDelimiter).pop();
-
-			return this.readDirElements(dir)
-				.filter((item) => !/(^|\/)\.[^/.]/g.test(item))
-				.map((i, index) => {
-					//Parsing File name
-					if (i.includes(DNA_DELIMITER)) {
-						throw new Error(
-							`File name can not contain "${DNA_DELIMITER}", please fix: ${i}`
-						);
-					}
-					const eleName = cleanName(i);
-					if (!eleName) {
-						throw new Error(`Error in loading File ${i}`);
-					}
-					const eleWeight = i.includes(schema.rarityDelimiter)
-						? rarityWeight(i)
-						: schema.rarityDefault;
-					if (!eleWeight) {
-						throw new Error(`Error in loading File ${i}`);
-					}
-
-					// Creating Element
-					const element: LayerElement = {
-						id: index,
-						name: eleName,
-						filename: i,
-						path: path.join(dir.toString(), i),
-						weight: parseInt(eleWeight),
-					};
-					return element;
-				});
+		  // Functions for extracting name and rarity weight from file name
+		  // File name is of the form "{name} rarityDelimiter {rarityWeight} . {extension}"
+		  const cleanName = (str: string) =>
+			path.parse(str).name.split(rarityDelimiter).shift();
+		  const rarityWeight = (str: string) =>
+			path.parse(str).name.split(rarityDelimiter).pop();
+	  
+		  return this.readDirElements(dir)
+			.filter((item) => !/(^|\/)\.[^/.]/g.test(item))
+			.map((i, index) => {
+			  //Parsing File name
+			  if (i.includes(DNA_DELIMITER)) {
+				throw new Error(
+				  `File name can not contain "${DNA_DELIMITER}", please fix: ${i}`
+				);
+			  }
+			  const eleName = cleanName(i);
+			  if (!eleName) {
+				throw new Error(`Error in loading File ${i}`);
+			  }
+			  const eleWeight = i.includes(schema.rarityDelimiter)
+				? rarityWeight(i)
+				: schema.rarityDefault;
+			  if (!eleWeight) {
+				throw new Error(`Error in loading File ${i}`);
+			  }
+	  
+			  // Creating Element
+			  const element: LayerElement = {
+				id: index,
+				name: eleName,
+				filename: i,
+				path: path.join(dir.toString(), i),
+				weight: parseInt(eleWeight),
+			  };
+			  return element;
+			});
 		};
 		// Creating Layers array
 		const layers: Layer[] = schema.layersOrder.map((layerObj, index) => {
-			const dir = layerObj.dir
-				? layerObj.dir
-				: path.join(schema.dir.toString(), layerObj.name);
+		  const dir = layerObj.dir
+			? layerObj.dir
+			: path.join(__dirname, '..', '..', '..', 'layers', layerObj.name);
 			const elements = getElements(dir, schema.rarityDelimiter);
-			let totalWeight = 0;
-			elements.forEach((element) => {
-				totalWeight += element.weight;
-			});
-			return {
-				id: index,
-				name: layerObj.name,
-				elements: elements,
-				totalWeight: totalWeight,
-			};
+		  let totalWeight = 0;
+		  elements.forEach((element) => {
+			totalWeight += element.weight;
+		  });
+		  return {
+			id: index,
+			name: layerObj.name,
+			elements: elements,
+			totalWeight: totalWeight,
+		  };
 		});
-
+	  
 		// Updating Collection attributes
 		this.schema = schema;
 		this.layers = layers;
-	}
+	  }
 
 	// NFT Generate Method
 	async generate() {
@@ -344,24 +352,28 @@ export class Collection {
 							this.schema.format.height
 						);
 					}
-					// Adding Layer Elements
+                    // Adding Layer Elements
 					renderImageArray.forEach((img, index) => {
 						if (!this.schema || !this.layers) {
-							throw new Error("Schema not found");
+						  throw new Error("Schema not found");
 						}
-						ctx.drawImage(
+						if (img) {
+						  ctx.drawImage(
 							img,
 							0,
 							0,
 							this.schema.format.width,
 							this.schema.format.height
-						);
-						// Saving attribute for metadata
-						attributesList.push({
+						  );
+						  // Saving attribute for metadata
+						  attributesList.push({
 							trait_type: this.layers[index].name,
 							value: selectedElements[index].name,
-						});
-					});
+						  });
+						} else {
+						  console.error(`Image not found for layer ${this.layers[index].name}`);
+						}
+			    });
 
 					// Saving NFT image and Metadata
 					this.saveImage(abstractedIndexes[0], canvasInstance);
@@ -393,22 +405,29 @@ export class Collection {
 
 	updateMetadataWithCID() {
 		const metadataDir = path.join(this.dir.toString(), "metadata");
+		if (!fs.existsSync(metadataDir)) {
+		  console.log(`Metadata directory '${metadataDir}' does not exist.`);
+		  return;
+		}
+	
 		const files = fs.readdirSync(metadataDir);
 		if ((files && files.length) <= 0) {
-			console.log(
-				`No Metadata files were found in folder '${metadataDir}'`
-			);
-			return;
+		  console.log(`No Metadata files were found in folder '${metadataDir}'`);
+		  return;
 		}
-
+	
 		files.forEach((fileName) => {
-			const filePath = path.join(metadataDir, fileName);
+		  const filePath = path.join(metadataDir, fileName);
+		  if (fs.existsSync(filePath)) {
 			const file_content = fs.readFileSync(filePath);
 			const content = JSON.parse(file_content.toString());
 			content.image = `${this.baseURL}/${this.assetsDirCID}/${
-				path.parse(fileName).name
+			  path.parse(fileName).name
 			}.png`;
 			fs.writeFileSync(filePath, JSON.stringify(content, null, 2));
+		  } else {
+			console.log(`Metadata file '${filePath}' does not exist.`);
+		  }
 		});
+	  }
 	}
-}
