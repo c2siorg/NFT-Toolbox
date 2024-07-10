@@ -36,14 +36,14 @@ The **Rarity Weight** of an image is used to specify how frequently it is to be 
 
 Examples of the two permissible file names would be _Black.png_ and _White#10.png_ where '#' is the **Rarity Delimiter**.
 
-## Initialize a Collection
+## Initialize Ethereum Collection
 
 **After [Importing the package](/docs/intro#import-it-in-your-project),**
 
-Call the `initCollection` function to initialize a Collection with the basic details.
+Call the `initEthereumCollection` function to initialize a Collection with the basic details.
 
 ```javascript
-nftToolbox.initCollection({
+nftToolbox.initEthereumCollection({
 	name: "Your Collection",
 	dir: "/path/to/directory/Your Collection/",
 	description: "Short description for Your Collecion",
@@ -52,10 +52,10 @@ nftToolbox.initCollection({
 
 ## Provide a Schema
 
-Call the `generateNFTs` function with a **Schema** object to start the generation.
+Call the `generateEthereumNFTs` function with a **Schema** object to start the generation.
 
 ```javascript
-nftToolbox.generateNFTs({
+nftToolbox.generateEthereumNFTs({
 	dir: "/path/to/directory/Layers/",
 	size: 100,
 	layersOrder: [
@@ -104,12 +104,91 @@ The attributes of **Schema** object are described below.
 | `rarityDefault`           | integer | Default value of Rarity Weight to be used for images when not specified in file name  |
 | `shuffleIndexes`          | boolean | Generate Indexes in a shuffled order                                                  |
 
+
+## Initialize Solana Collection
+
+Call the `initSolanaCollection` function to initialize a Collection with the basic details.
+
+```javascript
+nftToolbox.initSolanaCollection({
+  name: "Your Solana Collection",
+  dir: "/path/to/directory/Your Solana Collection/",
+  description: "Short description for Your Solana Collection",
+  programId: new PublicKey("your-program-id"),
+  account: new PublicKey("your-account-public-key"),
+});
+```
+
+
+## Provide a Schema
+
+For Solana NFTs, use the `generateSolanaNFTs` function with a similar schema object:
+
+```javascript
+import { Connection, Keypair } from "@solana/web3.js";
+
+const connection = new Connection("https://api.devnet.solana.com");
+const payer = Keypair.generate();
+
+nftToolbox.generateSolanaNFTs({
+	dir: "/path/to/directory/Solana-Layers/",
+	size: 100,
+	layersOrder: [
+		{ name: "background" },
+		{ name: "body" },
+		{ name: "eyes" },
+		{ name: "mouth" },
+	],
+	format: {
+		width: 512,
+		height: 512,
+		smoothing: true,
+	},
+	background: {
+		generate: true,
+		static: false,
+		brightness: 80,
+	},
+	dnaCollisionTolerance: 1000,
+	rarityDelimiter: "#",
+	rarityDefault: "1",
+	shuffleIndexes: true,
+	connection: connection,
+	payer: payer,
+});
+```
+
+The attributes of **Schema** object are described below.
+
+| Name                      | Type    | Description                                                                           |
+| ------------------------- | ------- | ------------------------------------------------------------------------------------- |
+| `dir`                     | string  | Path to parent directory containing Layer directories                                 |
+| `size`                    | integer | Total number of images to be generated                                                |
+| `layersOrder`             | array   | Array of Object containing `name` and `dir` in the Order of super-imposition.         |
+| `layersOrder`>`name`      | string  | Name of Layer (Used as _trait_type_ in metadata attributes)                           |
+| `layersOrder`>`dir`       | string  | _(optional)_ Path to Layer directory. Defaults to `Schema`>`dir`/`layersOrder`>`name` |
+| `format`                  | object  | Object containing `width` `height` and `smoothing`                                    |
+| `format`>`width`          | integer | Width of generated images in Pixels                                                   |
+| `format`>`height`         | integer | Height of generated images in Pixels                                                  |
+| `format`>`smoothing`      | boolean | Smoothen the Layer images after super-imposition                                      |
+| `background`              | object  | Object containing `generate` `static` `default` and `brightness`                      |
+| `background`>`generate`   | boolean | Add a Solid Background to all generated images                                        |
+| `background`>`static`     | boolean | Use same color for all images or select colors randomly. Defaults to _false_          |
+| `background`>`default`    | string  | Required if `static` is _true_. Hex string of color to be used                        |
+| `background`>`brightness` | integer | Brightness of Solid Background to be added. Defaults to 50%                           |
+| `dnaCollisionTolerance`   | integer | Number of collisions required to conclude that too few layer images are provided      |
+| `rarityDelimiter`         | string  | The character used as Rarity Delimiter                                                |
+| `rarityDefault`           | integer | Default value of Rarity Weight to be used for images when not specified in file name  |
+| `shuffleIndexes`          | boolean | Generate Indexes in a shuffled order                                                  |
+| `connection`           | connection | Solana connection object |
+| `payer`          | keypair |  Keypair of the account paying for transactions                                                |
+
 :::note
-The `generateNFTs` function creates Image and Metadata files in `assets` and `metadata`
+The generateEthereumNFTs and generateSolanaNFTs functions create Image and Metadata files in assets and metadata
 directories inside the Collection Directory.
 :::
 
 :::caution
-Images and Metadata files will be created by `generateNFTs` function in the directory path provided as
-`dir` to `initCollection` function. Present contents in the directory if any will be deleted.
+Images and Metadata files will be created by generateEthereumNFTs or generateSolanaNFTs functions in the directory path provided as
+dir to initEthereumCollection or initSolanaCollection function. Present contents in the directory if any will be deleted.
 :::

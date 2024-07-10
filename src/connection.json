@@ -1,0 +1,24 @@
+{
+	"network": "",
+	"provider": {
+		"infura": {
+			"projectId": "",
+			"projectSecret": ""
+		}
+	},
+	"wallet": {
+		"privateKey": ""
+	},
+
+	"solana": {
+	  "network": "",
+	  "rpc": "",
+	  "programId": "",
+	  "deployedAddress": "",
+	  "programData": "",
+	  "wallet": {
+	  "secretKey": [
+      ]
+    }
+  }
+}

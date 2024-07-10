@@ -434,5 +434,11 @@
 			"stateMutability": "nonpayable",
 			"type": "function"
 		}
-	]
+	],
+
+    "solanaConnection": {
+		"address": "3Fp6nVU22pfyv3jbLLoDHrj3yaNdKDWoe2qtCtbn38Bf",
+		"programId": "3Fp6nVU22pfyv3jbLLoDHrj3yaNdKDWoe2qtCtbn38Bf",
+		"programData": "3Fp6nVU22pfyv3jbLLoDHrj3yaNdKDWoe2qtCtbn38Bf"
+	}
 }

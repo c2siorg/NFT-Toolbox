@@ -164,14 +164,15 @@ export class Contract {
 
 	print(contractCode: string): void {
 		if (!fs.existsSync(this.dir)) {
-			fs.mkdirSync(this.dir);
+		  fs.mkdirSync(this.dir, { recursive: true });
 		}
 		fs.writeFileSync(
-			path.join(this.dir.toString(), `${this.name}.sol`),
-			contractCode,
-			{ flag: "w" }
+		  path.join(this.dir.toString(), `${this.name}.sol`),
+		  contractCode,
+		  { flag: "w" }
 		);
-	}
+		console.log(`Contract created: ${path.join(this.dir.toString(), `${this.name}.sol`)}`);
+	  }
 
 	draft(options: DraftOptions): void {
 		let contractCode: string;
