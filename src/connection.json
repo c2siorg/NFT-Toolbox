@@ -1,0 +1,24 @@
+{
+	"network": "sepolia",
+	"provider": {
+		"infura": {
+			"projectId": "b1174536ea344728a2d2eab8aa405f12",
+			"projectSecret": "EZDbkcCzjWlknUEe9CSUk1XlrPVsopzuIwwHOjthqPYYzZ9RxOs+bA"
+		}
+	},
+	"wallet": {
+		"privateKey": "0f60d01fe41976c2a847cf929ec2dc1d1b8c40f6a044ae0dab48ddc2e36d6c42"
+	},
+
+	"solana": {
+	  "network": "devnet",
+	  "rpc": "https://solana-devnet.g.alchemy.com/v2/0OEvxysk7M3AkXBvHP2IRGon-mQXATjS",
+	  "programId": "DuSu31wMA9kcdAg2d5idNoJWXkGFVR9CYxEoqkf1nqkq",
+	  "deployedAddress": "6AvcsDeaJ8AvSPds9zd3uFGtfJCKBUiD7xpPgj35hiKs",
+	  "programData": "6AvcsDeaJ8AvSPds9zd3uFGtfJCKBUiD7xpPgj35hiKs",
+	  "wallet": {
+		"secretKey": "2zn81bjDXeX68pTwV49EVZxKLd5dr1yaiqXQTFATovK5YiyC7Gxze6AwvLXSKwcisCm4Rigkax8QEwRzrKPoXjoS"
+	  }
+	}
+}
+

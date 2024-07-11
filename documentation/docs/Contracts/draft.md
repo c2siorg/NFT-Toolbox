@@ -4,6 +4,8 @@ sidebar_position: 2
 
 # Draft Contract File
 
+# Ethereum Draft Contract
+
 The **ERC721** and **ERC1155** standards created by [Open Zeppelin](https://www.openzeppelin.com/contracts)
 are the most popular NFT Contracts used by the community.
 The [Open Zeppelin Wizard](https://wizard.openzeppelin.com/) is a tool that programatically generates
@@ -76,5 +78,30 @@ nftToolbox.draftContract({
 	// ERC1155 options
 	supply: false;
 	updatableUri: false;
+});
+```
+
+# Draft Solana Contract 
+
+To create a new Solana contract, use the `draftSolanaContract` function. This function generates a Rust program for your NFT contract.
+
+## Parameters
+
+The `draftSolanaContract` function takes the following parameters:
+
+
+| Name           | Type    | Description                                |
+| -------------- | -------  | ------------------------------------------ |
+| `payer`      | Keypair  |  Keypair of the account paying for deployment              |
+| `programId`     | string |  Program ID for the contract               |
+| `programData`     | Buffer |  Program data for the contract            |
+
+## Examples
+
+```javascript
+nftToolbox.draftSolanaContract({
+  payer: payer,
+  programId: programId,
+  programData: programData,
 });
 ```

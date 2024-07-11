@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const config = {
 	title: "NFT Toolbox",
 	tagline: "",
-	url: "https://github.com/scorelab/NFT-Toolbox",
+	url: "https://github.com/c2siorg/NFT-Toolbox",
 	baseUrl: "/",
 	onBrokenLinks: "throw",
 	onBrokenMarkdownLinks: "warn",
@@ -16,7 +16,7 @@ const config = {
 
 	// GitHub pages deployment config.
 	// If you aren't using GitHub pages, you don't need these.
-	organizationName: "scorelab", // Usually your GitHub org/user name.
+	organizationName: "c2si", // Usually your GitHub org/user name.
 	projectName: "NFT-Toolbox", // Usually your repo name.
 
 	// Even if you don't use internalization, you can use this field to set useful
@@ -36,7 +36,7 @@ const config = {
 					sidebarPath: require.resolve("./sidebars.js"),
 					// Please change this to your repo.
 					// Remove this to remove the "edit this page" links.
-					editUrl: "https://github.com/scorelab/NFT-Toolbox#readme",
+					editUrl: "https://github.com/c2siorg/NFT-Toolbox#readme",
 				},
 				theme: {
 					customCss: require.resolve("./src/css/custom.css"),
@@ -62,7 +62,7 @@ const config = {
 						label: "Docs",
 					},
 					{
-						href: "https://github.com/scorelab/NFT-Toolbox",
+						href: "https://github.com/c2siorg/NFT-Toolbox",
 						label: "GitHub",
 						position: "right",
 					},
@@ -84,13 +84,13 @@ const config = {
 						title: "Community",
 						items: [
 							{
-								label: "Gitter",
-								href: "https://gitter.im/scorelab/mint-NFT",
+								label: "Slack",
+								href: "https://join.slack.com/t/c2si-org/shared_invite/zt-2lvvctuo2-3zmSvwIvky2ddxr~xW25VA",
 							},
 						],
 					},
 				],
-				copyright: `Copyright © ${new Date().getFullYear()} SCoRe Lab, Inc.`,
+				copyright: `Copyright © ${new Date().getFullYear()} C2SI, Inc.`,
 			},
 			prism: {
 				theme: lightCodeTheme,
