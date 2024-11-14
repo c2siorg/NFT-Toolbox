@@ -1,13 +1,13 @@
 import { readFileSync } from "fs";
 import path from "path";
-import { nftToolbox } from "../src/index";
+import { nftToolbox } from "../../../index";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const account = JSON.parse(
 	readFileSync(path.join(__dirname, "account.json")).toString()
 );
 
-nftToolbox.initCollection({
+nftToolbox.initEthereumCollection({
 	name: "Demo Collection",
 	dir: path.join(__dirname, "Demo Collection"),
 	description: "This is a demo collection for NFT Toolbox",

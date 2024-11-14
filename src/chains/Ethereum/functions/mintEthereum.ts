@@ -1,8 +1,8 @@
 import path from "path";
 import fs from "fs";
-import { nftToolbox } from "../src/index";
+import { nftToolbox } from "../../../index";
 
-nftToolbox.initContract({
+nftToolbox.initEthereumContract({
 	name: "DemoContract",
 	symbol: "DEMO",
 	dir: path.join(__dirname, "Contracts"),

@@ -1,18 +1,18 @@
 import { readFileSync } from "fs";
 import path from "path";
-import { nftToolbox } from "../src/index";
+import { nftToolbox } from "../../../index";
 
-nftToolbox.initContract({
+nftToolbox.initEthereumContract({
 	name: "DemoContract",
 	symbol: "DEMO",
 	dir: path.join(__dirname, "Contracts"),
 	standard: "ERC721",
 	connection: JSON.parse(
-		readFileSync(path.join(__dirname, "connection.json")).toString()
+		readFileSync(path.join(__dirname, "..", "..", "..", "connection.json")).toString()
 	),
 });
 
-nftToolbox.draftContract({
+nftToolbox.draftEthereumContract({
 	baseUri: "ipfs://exampleCID/",
 	mintable: true,
 	incremental: true,

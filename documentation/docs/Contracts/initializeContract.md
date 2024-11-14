@@ -16,7 +16,7 @@ The parameters of `initContract` function are described as follows.
 | `name`       | string | Name of the Contract used on deployment                                                                                                               |
 | `symbol`     | string | Symbol of the Contract used on deployment                                                                                                             |
 | `dir`        | string | Path to directory where the new Contract File is to be created                                                                                        |
-| `standard`   | string | `"ERC721"` or `"ERC1155"`                                                                                                                             |
+| `standard`   | string | `"ERC721"` `"ERC998"` `"ERC1151"` or `"ERC1155"`                                                                                   |
 | `connection` | object | Used to set up **ethers.js** connection. Described [here](/docs/Contracts/initializeContract#connection-details)                                      |
 | `deployed`   | object | _(optional)_ Used for initialization of deployed contracts. Described [here](/docs/Contracts/initializeContract#initialization-for-deployed-contract) |
 
@@ -39,10 +39,7 @@ See their [documentation](https://docs.ethers.io/v5/) for more details.
 #### Supported Networks
 
 -   Ethereum Mainnet (`"homestead"`)
--   Ropsten Testnet (`"ropsten"`)
--   Rinkeby Testnet (`"rinkeby"`)
 -   Goerli Testnet (`"goerli"`)
--   Kovan Testnet (`"kovan"`)
 -   Polygon Mainnet (`"matic"`)
 -   Polygon Mumbai Testnet (`"maticmum"`)
 

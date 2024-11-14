@@ -1,17 +1,15 @@
 import fs from "fs";
 import { erc721, erc1155 } from "@openzeppelin/wizard";
+import { erc998 } from "./ERC998";
 import path from "path";
 import { ethers } from "ethers";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const solc = require("solc");
 
-type ercStandards = "ERC721" | "ERC1155";
+type ercStandards = "ERC721"|"ERC998"|"ERC1155";
 type networks =
 	| "homestead"
-	| "ropsten"
-	| "rinkeby"
 	| "goerli"
-	| "kovan"
 	| "matic"
 	| "maticmum";
 
@@ -27,6 +25,18 @@ interface ERC721Options {
     mintable?: boolean;
     incremental?: boolean;
     votes?: boolean;
+}
+
+interface ERC998Options {
+    baseUri: string;
+    burnable?: boolean;
+    pausable?: boolean;
+    mintable?: boolean;
+    composable: boolean;
+    rootOwner: string; 
+    rootId: number; 
+    extension: string; 
+    extensionId: number;
 }
 
 interface ERC1155Options {
@@ -50,6 +60,12 @@ export interface DraftOptions {
 	uriStorage?: boolean;
 	incremental?: boolean;
 	votes?: boolean;
+	// ERC998 options
+	composable?: boolean;
+	rootOwner?: string;
+	rootId?: number;
+	extension?: string;
+	extensionId?: number;
 	// ERC1155 options
 	supply?: boolean;
 	updatableUri?: boolean;
@@ -164,14 +180,15 @@ export class Contract {
 
 	print(contractCode: string): void {
 		if (!fs.existsSync(this.dir)) {
-			fs.mkdirSync(this.dir);
+		  fs.mkdirSync(this.dir, { recursive: true });
 		}
 		fs.writeFileSync(
-			path.join(this.dir.toString(), `${this.name}.sol`),
-			contractCode,
-			{ flag: "w" }
+		  path.join(this.dir.toString(), `${this.name}.sol`),
+		  contractCode,
+		  { flag: "w" }
 		);
-	}
+		console.log(`Contract created: ${path.join(this.dir.toString(), `${this.name}.sol`)}`);
+	  }
 
 	draft(options: DraftOptions): void {
 		let contractCode: string;
@@ -183,6 +200,13 @@ export class Contract {
 					...options,
 				});
 				break;
+			case "ERC998": 
+                contractCode = erc998.print({
+                    name: this.name,
+                    symbol: this.symbol,
+                    ...options,
+                });
+                break;				
 			case "ERC1155":
 				contractCode = erc1155.print({
 					name: this.name,
