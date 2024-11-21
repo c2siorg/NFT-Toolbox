@@ -1,10 +1,10 @@
 import path from "path";
-import { nftToolbox } from "../src/index";
+import { nftToolbox } from "../../../index";
 
-nftToolbox.initCollection({
-	name: "Demo Collection",
-	dir: path.join(__dirname, "Demo Collection"),
-	description: "This is a demo collection for NFT Toolbox",
+nftToolbox.initEthereumCollection({
+	name: "Demo Collection - Ethereum",
+	dir: path.join(__dirname, "Demo Collection - Ethereum"),
+	description: "This is a demo collection for NFT Toolbox in Ethereum",
 });
 
 nftToolbox.generateNFTs({

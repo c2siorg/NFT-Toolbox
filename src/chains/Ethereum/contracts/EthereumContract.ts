@@ -1,11 +1,12 @@
 import fs from "fs";
 import { erc721, erc1155 } from "@openzeppelin/wizard";
+import { erc1151 } from "./ERC1151";
 import path from "path";
 import { ethers } from "ethers";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const solc = require("solc");
 
-type ercStandards = "ERC721" | "ERC1155";
+type ercStandards = "ERC721" | "ERC1151"| "ERC1155";
 type networks =
 	| "homestead"
 	| "ropsten"
@@ -29,6 +30,20 @@ interface ERC721Options {
     votes?: boolean;
 }
 
+interface ERC1151Options {
+    baseUri: string;
+    burnable?: boolean;
+    pausable?: boolean;
+    mintable?: boolean;
+    nftOwners: Record<string, string>; 
+    ownerToNFTCount: Record<string, number>; 
+    nftApprovals: Record<string, string>; 
+    nftBalances: Record<string, number>; 
+    nftData: Record<string, string>; 
+    operatorApprovals: Record<string, Record<string, boolean>>; 
+}
+	
+
 interface ERC1155Options {
 	name: string;
     uri: string;
@@ -50,6 +65,13 @@ export interface DraftOptions {
 	uriStorage?: boolean;
 	incremental?: boolean;
 	votes?: boolean;
+	// ERC1151 options
+	nftOwners?: Record<string, string>;
+	ownerToNFTCount?: Record<string, number>;
+	nftApprovals?: Record<string, string>;
+	nftBalances?: Record<string, number>;
+	nftData?: Record<string, string>;
+	operatorApprovals?: Record<string, Record<string, boolean>>;
 	// ERC1155 options
 	supply?: boolean;
 	updatableUri?: boolean;
@@ -164,20 +186,28 @@ export class Contract {
 
 	print(contractCode: string): void {
 		if (!fs.existsSync(this.dir)) {
-			fs.mkdirSync(this.dir);
+		  fs.mkdirSync(this.dir, { recursive: true });
 		}
 		fs.writeFileSync(
-			path.join(this.dir.toString(), `${this.name}.sol`),
-			contractCode,
-			{ flag: "w" }
+		  path.join(this.dir.toString(), `${this.name}.sol`),
+		  contractCode,
+		  { flag: "w" }
 		);
-	}
+		console.log(`Contract created: ${path.join(this.dir.toString(), `${this.name}.sol`)}`);
+	  }
 
 	draft(options: DraftOptions): void {
 		let contractCode: string;
 		switch (this.standard) {
 			case "ERC721":
 				contractCode = erc721.print({
+					name: this.name,
+					symbol: this.symbol,
+					...options,
+				});
+				break;
+			case "ERC1151":
+				contractCode = erc1151.print({
 					name: this.name,
 					symbol: this.symbol,
 					...options,
@@ -211,7 +241,6 @@ export class Contract {
 				return { error: "OPEN ZEPPELIN IMPORT FAILED" };
 			}
 		}
-
 		const compilerInput = {
 			language: "Solidity",
 			sources: {
